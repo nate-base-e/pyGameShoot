@@ -23,7 +23,7 @@ while running:
     background_image = pygame.transform.scale(bGimage, screen.get_size())
     screen.blit(background_image, (0, 0))
 
-    pygame.draw.circle(screen, "red", player_pos, 40)
+    pygame.sprite(screen, "red", player_pos, 40)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
