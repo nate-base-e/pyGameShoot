@@ -1,6 +1,5 @@
 import pygame
 
-
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
@@ -9,6 +8,7 @@ running = True
 dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+
 
 class Character(pygame.sprite.Sprite):
     def __init__(self):
@@ -52,19 +52,17 @@ while running:
     background_image = pygame.transform.scale(bGimage, screen.get_size())
     screen.blit(background_image, (0, 0))
 
-    sprites.update()
-    sprites.draw(screen)
-
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
+        character.y -= 300 * dt
     if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
+        character.y += 300 * dt
     if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
+        character.x -= 300 * dt
     if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+        character.x += 300 * dt
 
+    character.draw(screen)
     # flip() the display to put your work on screen
     pygame.display.flip()
 
