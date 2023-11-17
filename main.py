@@ -6,7 +6,9 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 dt = 0
-gravity = 0.1
+gravity = 1.0
+startx = 200
+starty = 200
 
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
@@ -20,16 +22,21 @@ class Character(pygame.sprite.Sprite):
         self.image = pygame.image.load("assets/rocket_ship.jpg")
         self.rect = self.image.get_rect()
 
-        self.x = 500
-        self.y = 500
+
+        self.x = startx
+        self.y = starty
         self.vy = gravity
         self.vx = 0
 
-    def update(self):
-        # Update the character's position
+    def update(self,dt):
 
+        # Update the character's position
         self.x += 0
+        self.rect.x +=0
         self.y += self.vy
+        self.rect.y += self.vy
+
+        self.vy += gravity*dt
 
     def draw(self, screen):
         # Draw the character to the screen
@@ -42,7 +49,7 @@ sprites = pygame.sprite.Group()
 
 # Create a character object
 character = Character()
-character.rect = pygame.Rect(200, 200, 100, 100)
+character.rect = pygame.Rect(startx, starty, 50, 50)
 
 # Add the character to the Sprite group
 sprites.add(character)
@@ -56,9 +63,9 @@ while running:
 
     if character.rect.colliderect(ground_rect):
         character.vy = 0
-        character.update()
+        character.update(dt)
     else:
-        character.update()
+        character.update(dt)
 
 
     # poll for events
@@ -90,7 +97,8 @@ while running:
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
     dt = clock.tick(60) / 1000
-    pygame.draw.rect(screen, (255, 255, 255), character.rect)
+#    pygame.draw.rect(screen, (255, 255, 255), ground_rect)
+
 pygame.quit()
 
 
