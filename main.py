@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 # pygame setup
 pygame.init()
@@ -12,6 +13,14 @@ starty = 200
 
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+
+# mixer.init()
+# mixer.music.load('song.mp3')
+# mixer.music.set_volume(0.2)
+# mixer.music.play()
+
+hit_sound = pygame.mixer.Sound('assets/audio/empty_can.wav')
+hit_sound.set_volume(0.4)
 
 
 class Character(pygame.sprite.Sprite):
@@ -57,6 +66,7 @@ bGimage = pygame.image.load("assets/galaxy.jpg")
 
 #add ground to the game
 ground_rect = pygame.Rect(0, screen.get_height() - 50, screen.get_width(), 50)
+candrop = False
 
 while running:
     #apply gravity
@@ -64,6 +74,9 @@ while running:
     if character.rect.colliderect(ground_rect):
         character.vy = 0
         character.update(dt)
+        if not candrop:
+            hit_sound.play()
+            candrop = True
     else:
         character.update(dt)
 
