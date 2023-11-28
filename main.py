@@ -82,10 +82,11 @@ ground_rect = pygame.Rect(0, screen.get_height() - 50, screen.get_width(), 50)
 candrop = False
 update = False
 totTime = 0
+framerate = 60 #fps
 
 while running:
-    if totTime>2:
-        totTime-=2
+    if totTime>1/framerate:
+        totTime-=1/framerate
         update = True
 
     #rotate item
