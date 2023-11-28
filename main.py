@@ -28,14 +28,16 @@ class Character(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("assets/rocket_ship.jpg")
-        self.rect = self.image.get_rect()
-
+        self.characterSurface = None
+        self.original_image = pygame.image.load("assets/rocket_ship.jpg")
+        self.image = self.original_image
+        self.original_rect = self.image.get_rect()
 
         self.x = startx
         self.y = starty
         self.vy = gravity
         self.vx = 0
+        self.angle = 0
 
     def update(self,dt):
 
@@ -50,7 +52,18 @@ class Character(pygame.sprite.Sprite):
     def draw(self, screen):
         # Draw the character to the screen
 
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, self.rect)
+
+    def rotate(self,angle):
+        self.angle += angle
+        rotated_image = pygame.transform.rotozoom(self.image, self.angle, 1.0)
+
+        new_center = self.original_rect.center + rotated_image.get_offset()
+        rotated_rect = rotated_image.get_rect(center=(new_center[0], new_center[1]))
+
+        self.image = rotated_image
+        self.rect = rotated_rect
+
 
 
 # Create a Sprite group
@@ -67,8 +80,18 @@ bGimage = pygame.image.load("assets/galaxy.jpg")
 #add ground to the game
 ground_rect = pygame.Rect(0, screen.get_height() - 50, screen.get_width(), 50)
 candrop = False
+update = False
+totTime = 0
 
 while running:
+    if totTime>2:
+        totTime-=2
+        update = True
+
+    #rotate item
+    # if update:
+    #     character.rotate(2)
+
     #apply gravity
 
     if character.rect.colliderect(ground_rect):
@@ -79,6 +102,9 @@ while running:
             candrop = True
     else:
         character.update(dt)
+        candrop = False
+
+
 
 
     # poll for events
@@ -95,12 +121,16 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         character.y -= 300 * dt
+        character.rect.y -= 300 *dt
     if keys[pygame.K_s]:
         character.y += 300 * dt
+        character.rect.y += 300 * dt
     if keys[pygame.K_a]:
         character.x -= 300 * dt
+        character.rect.x -= 300 * dt
     if keys[pygame.K_d]:
         character.x += 300 * dt
+        character.rect.x += 300 * dt
 
     character.draw(screen)
     # flip() the display to put your work on screen
@@ -111,6 +141,8 @@ while running:
     # independent physics.
     dt = clock.tick(60) / 1000
 #    pygame.draw.rect(screen, (255, 255, 255), ground_rect)
+    totTime+=dt
+    update = False
 
 pygame.quit()
 
