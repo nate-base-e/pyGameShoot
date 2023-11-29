@@ -8,8 +8,8 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 gravity = 1.0
-startx = 200
-starty = 200
+startx = 0
+starty = 0
 
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
@@ -28,9 +28,8 @@ class Character(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.image = pygame.image.load("assets/rocket_ship.jpg")
-        self.rect = self.image.get_rect()
-
+        self.image = pygame.image.load("assets/RocketSprite.png").convert_alpha()
+        self.rect = pygame.Rect(startx,starty,100,100)
 
         self.x = startx
         self.y = starty
@@ -47,10 +46,12 @@ class Character(pygame.sprite.Sprite):
 
         self.vy += gravity*dt
 
-    def draw(self, screen):
+    def draw(self, screen,num):
+        #num is 1-4 for direction
         # Draw the character to the screen
-
-        screen.blit(self.image, (self.x, self.y))
+        image = pygame.Surface((100*num,100)).convert_alpha()#this is the end
+        image.blit(self.image,(0,0),(100*(num-1),0,100,100))#this is the beginning
+        screen.blit(image,(0,0))
 
 
 # Create a Sprite group
@@ -102,7 +103,7 @@ while running:
     if keys[pygame.K_d]:
         character.x += 300 * dt
 
-    character.draw(screen)
+    character.draw(screen,4)
     # flip() the display to put your work on screen
     pygame.display.flip()
 
