@@ -23,6 +23,7 @@ hit_sound = pygame.mixer.Sound('assets/audio/empty_can.wav')
 hit_sound.set_volume(0.4)
 
 
+
 class Character(pygame.sprite.Sprite):
 #https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/pygame-collision
     def __init__(self):
