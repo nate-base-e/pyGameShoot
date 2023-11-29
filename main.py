@@ -35,6 +35,7 @@ class Character(pygame.sprite.Sprite):
         self.y = starty
         self.vy = gravity
         self.vx = 0
+        self.angle = 0
 
     def update(self,dt):
 
@@ -53,6 +54,16 @@ class Character(pygame.sprite.Sprite):
         image.blit(self.image,(0,0),(100*(num-1),0,100,100))#this is the beginning
         screen.blit(image,(0,0))
 
+    def rotate(self,angle):
+        self.angle += angle
+        rotated_image = pygame.transform.rotozoom(self.image, self.angle, 1.0)
+
+        new_center = self.original_rect.center + rotated_image.get_offset()
+        rotated_rect = rotated_image.get_rect(center=(new_center[0], new_center[1]))
+
+        self.image = rotated_image
+        self.rect = rotated_rect
+
 
 # Create a Sprite group
 sprites = pygame.sprite.Group()
@@ -68,8 +79,19 @@ bGimage = pygame.image.load("assets/galaxy.jpg")
 #add ground to the game
 ground_rect = pygame.Rect(0, screen.get_height() - 50, screen.get_width(), 50)
 candrop = False
+update = False
+totTime = 0
+framerate = 60 #fps
 
 while running:
+    if totTime>1/framerate:
+        totTime-=1/framerate
+        update = True
+
+    #rotate item
+    # if update:
+    #     character.rotate(2)
+
     #apply gravity
 
     if character.rect.colliderect(ground_rect):
@@ -80,6 +102,9 @@ while running:
             candrop = True
     else:
         character.update(dt)
+        candrop = False
+
+
 
 
     # poll for events
@@ -96,12 +121,16 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         character.y -= 300 * dt
+        character.rect.y -= 300 *dt
     if keys[pygame.K_s]:
         character.y += 300 * dt
+        character.rect.y += 300 * dt
     if keys[pygame.K_a]:
         character.x -= 300 * dt
+        character.rect.x -= 300 * dt
     if keys[pygame.K_d]:
         character.x += 300 * dt
+        character.rect.x += 300 * dt
 
     character.draw(screen,4)
     # flip() the display to put your work on screen
@@ -112,6 +141,8 @@ while running:
     # independent physics.
     dt = clock.tick(60) / 1000
 #    pygame.draw.rect(screen, (255, 255, 255), ground_rect)
+    totTime+=dt
+    update = False
 
 pygame.quit()
 
