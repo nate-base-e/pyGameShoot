@@ -27,20 +27,7 @@ text1 = font.render("Line 1", True, BLACK)
 text2 = font.render("Line 2", True, BLACK)
 text3 = font.render("Line 3", True, BLACK)
 
-class box:
 
-    def __init__(self,xloc,yloc,isDrawn):
-        self.xloc = xloc
-        self.yloc = yloc
-        self.isDrawn = isDrawn
-
-    def draw(self):
-        screen.blit(rectangle)
-recs = []
-for i in range(100):
-    #change y and x values
-    #change draw or not
-    recs.append(box(0,0))
 
 # Create the selection arrow
 arrow_pos = (rectangle.left + rectangle.width - 30, rectangle.top + 30)
