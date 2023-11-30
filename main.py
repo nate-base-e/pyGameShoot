@@ -70,7 +70,7 @@ class Character(pygame.sprite.Sprite):
 class Flake(pygame.sprite.Sprite):
     def __init__(self, x, y, size):
         super().__init__()
-        self.size = size
+        self.size = random()*4 +4
         self.speed = random()*3 + 2
         self.x = x
         self.y = y
@@ -82,9 +82,11 @@ class Flake(pygame.sprite.Sprite):
         self.rect.center = (x, y)
 
     def update(self):
-        self.y += self.speed
-        #self.x += random()*4-2
-        self.rect.center = (self.x, self.y)
+        #moves the snow down could add side to side
+        self.rect.move_ip(0, self.speed)
+        #removes the snow when it falls off the screen
+        if self.rect.top > screen.get_height():
+            self.kill()
 
 
 # creating a group for the snow sprites
@@ -121,11 +123,9 @@ while running:
         totTime -= 1 / framerate
         update = True
 
-    # rotate item
-    # if update:
-    #     character.rotate(2)
-
-    # apply gravity
+    #add a new snowflake on every frame
+    if update:
+        addFlake(random() * screen.get_width(), 0, 8, snow)
 
     if character.rect.colliderect(ground_rect):
         character.vy = 0
