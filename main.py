@@ -28,9 +28,9 @@ class Character(pygame.sprite.Sprite):
         self.x = startx
         self.y = starty
         self.num = frame
-        self.sheet = pygame.image.load("assets/RocketSprite.png")
+        self.sheet = pygame.image.load("assets/rocketsheet.png")
         self.rect = pygame.Rect(100*(self.num-1), 0, 100, 100) #rect is independent of the screen frame
-        image_su = pygame.Surface(self.rect.size)
+        image_su = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32).convert_alpha()
         image_su.blit(self.sheet, (0,0), self.rect)
         self.image = image_su
 
@@ -44,7 +44,7 @@ class Character(pygame.sprite.Sprite):
         self.x += 0
         self.y += self.vy
         self.rect = pygame.Rect(100 * (self.num - 1), 0, 100, 100)
-        image_su = pygame.Surface(self.rect.size)
+        image_su = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32).convert_alpha()
         image_su.blit(self.sheet, (0,0), self.rect)
         self.image = image_su
         self.rect.center = (self.x, self.y)
@@ -74,7 +74,7 @@ class Flake(pygame.sprite.Sprite):
         self.speed = random()*3 + 2
         self.x = x
         self.y = y
-        self.image = pygame.Surface((self.size, self.size))
+        self.image = pygame.Surface((self.size, self.size), pygame.SRCALPHA, 32).convert_alpha()
         # self.image.fill((255, 0, 0))
         pygame.draw.circle(self.image, (255, 255, 255), (self.size / 2, self.size / 2),
                            self.size / 2)  # center is center of rect image
@@ -153,7 +153,7 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         character.y -= 300 * dt
-        character.num = 1
+        character.num = 4
     if keys[pygame.K_s]:
         character.y += 300 * dt
         character.num = 2
@@ -162,7 +162,7 @@ while running:
         character.num = 3
     if keys[pygame.K_d]:
         character.x += 300 * dt
-        character.num = 4
+        character.num = 1
 
     sprites.draw(screen)
     # flip() the display to put your work on screen
