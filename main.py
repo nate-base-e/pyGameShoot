@@ -117,6 +117,7 @@ candrop = False
 update = False
 totTime = 0
 framerate = 60  # fps
+bgx = 0
 
 while running:
     if totTime > 1 / framerate:
@@ -143,8 +144,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     # drawing background
-    background_image = pygame.transform.scale(bGimage, screen.get_size())
-    screen.blit(background_image, (0, 0))
+    background_image = pygame.transform.scale(bGimage, (screen.get_width()*2,screen.get_height()*2))
+    screen.blit(background_image, (bgx, 0))
 
     snow.update()
     snow.draw(screen)
@@ -160,9 +161,13 @@ while running:
     if keys[pygame.K_a]:
         character.x -= 300 * dt
         character.num = 3
+        if bgx < 0:
+            bgx+=1
     if keys[pygame.K_d]:
         character.x += 300 * dt
         character.num = 1
+        if bgx < screen.get_width():
+            bgx-=1
 
     sprites.draw(screen)
     # flip() the display to put your work on screen
