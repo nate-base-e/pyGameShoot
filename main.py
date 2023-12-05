@@ -162,12 +162,12 @@ while running:
         character.x -= 300 * dt
         character.num = 3
         if bgx < 0:
-            bgx+=1
+            bgx+=300* dt
     if keys[pygame.K_d]:
         character.x += 300 * dt
         character.num = 1
         if bgx < screen.get_width():
-            bgx-=1
+            bgx-=300* dt
 
     sprites.draw(screen)
     # flip() the display to put your work on screen
