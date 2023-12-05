@@ -161,12 +161,12 @@ while running:
     if keys[pygame.K_a]:
         character.x -= 300 * dt
         character.num = 3
-        if bgx < 0:
+        if bgx+300*dt < 0:
             bgx+=300* dt
     if keys[pygame.K_d]:
         character.x += 300 * dt
         character.num = 1
-        if bgx < screen.get_width():
+        if bgx-300*dt > -screen.get_width():
             bgx-=300* dt
 
     sprites.draw(screen)
